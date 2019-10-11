@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>占卜系统</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"></link>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/cal.js"></script>
+<style type="text/css">
+
+.t-group .select{
+  height:30px;
+  line-height:30px;
+  margin-right:1px;
+}
+.t-group .radio{
+  margin-right:3px;
+}
+pre{
+margin:0px;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+.t-group  
+</style>
+
+<script>
+function analysis(){
+     var url="analysis?"+$("#form1").serialize();
+	$.post(url,function(data){
+		var data = data.data;
+		$(".result").css("display","block");
+		$(".result .bazi .panel-body").html(data.bazi);
+		$(".result .basic .panel-body").html(data.basic);
+		$(".result .kaiyun .panel-body").html(data.kaiyun);
+		$(".result .mingge .panel-body").html(data.mingge);
+		$(".result .sizhu .panel-body").html(data.sizhu);
+		$(".result .shensha .panel-body").html(data.shensha);
+		$(".result .goodevil .panel-body").html(data.goodevil);
+		$(".result .jixiong .panel-body").html(data.jixiong);
+		$(".result .taisui .panel-body").html(data.taisui);
+		$(".result .tzm .panel-body").html(data.tzm);
+		$(".result .business .panel-body").html(data.business);
+	});
+}
+function emp(){
+$(".result").css("display","none");
+}
+function download(){
+var url = "download?"+$("#form1").serialize();
+window.location.href=url;
+}
+</script>
+  </head>
+  <body>
+  
+  
+  
+  
+   <nav class="navbar navbar-inverse navbar-static-top" id="top_nav">
+<div class="container-fluid">
+  	<div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">X科技</a>
+    </div>
+    
+    
+     <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="index"><a href="login">主页<span class="sr-only">(current)</span></a></li>
+        <li class="problem active"><a href="fill">算命</a></li>
+        <li class="admin" th:if="${isAdmin}==1"><a href="user_admin">管理</a></li>
+        <li class='aboutUs'>
+          <a href="#">关于我们</a>
+        </li>
+      </ul>
+      
+ <!--     <ul class="nav navbar-nav navbar-right">
+        <li class='register'><a href="${path}/home/register.do">注册</a></li>
+        <li class='login'>
+          <a href="${path}/home/login.do">登录</a>
+        </li>
+      </ul>
+      
+-->      
+    </div><!-- /.navbar-collapse -->
+</div>    
+</nav>
+
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    
+    
+    
+<div class="panel panel-default" style="margin-left:50px;margin-right:50px;">
+ <div class="panel-heading">
+    	<h3 class="panel-title">算命人信息</h3>
+ </div>
+  
+   <div class="panel-body">
+   
+<form class="form-horizontal" id='form1' onsubmit="return false" name='form1'>
+  <div class="form-group" id='errorInfo' style="display:block;color:red;" th:text="${errorMsg}"></div>
+  
+  <div class="form-group">
+    <label for="sex" class="col-sm-2 control-label">性别</label>
+    
+    <div class="col-sm-4" style="padding-top:7px;">
+      <select id='sex' name='sex' style="width:100px">
+  		<option value='1'>男</option>
+  		<option value='2'>女</option>
+  		</select>
+    </div>
+    
+  </div>
+  
+  <div class="form-group">	
+    <label for="name" class="col-sm-2 control-label">姓名</label>
+    <div class="col-sm-4">
+      <input type="text" name='name' class="form-control" id="name" placeholder="姓名" required>
+    </div>
+  </div>
+  
+  <div class="form-group t-group">
+    <label for="bornTime" class="col-sm-2 control-label">出生时间</label>
+    <div class="col-sm-4">
+       <input type="text" class="dateValue form-control" id="bornTime" name="bornTime" placeholder="请选择出生年月">
+      
+    </div>
+  </div>
+  
+  
+   <div class="form-group">
+    <label for="usegod" class="col-sm-2 control-label">用神</label>
+    
+    <div class="col-sm-4" style="padding-top:7px;">
+      <select id='usegod' name='usegod' style="width:100px">
+	  <option value='0'>金</option>
+  		<option value='1'>木</option>
+  		<option value='2'>水</option>
+  		<option value='3'>火</option>
+  		<option value='4'>土</option>
+  		</select>
+    </div>
+  </div>  
+    
+   <div class="form-group">
+    <label for="lovegod" class="col-sm-2 control-label">喜神</label>
+    
+    <div class="col-sm-4" style="padding-top:7px;">
+      <select id='lovegod' name='lovegod' style="width:100px">
+  		<option value='0'>金</option>
+  		<option value='1' selected>木</option>
+  		<option value='2'>水</option>
+  		<option value='3'>火</option>
+  		<option value='4'>土</option>
+  		</select>
+    </div>
+  </div>
+    
+    
+   <div class="form-group">
+    <label for="hategod" class="col-sm-2 control-label">忌神</label>
+    
+    <div class="col-sm-4" style="padding-top:7px;">
+      <select id='hategod' name='hategod' style="width:100px">
+  		<option value='0'>金</option>
+  		<option value='1'>木</option>
+  		<option value='2' selected>水</option>
+  		<option value='3'>火</option>
+  		<option value='4'>土</option>
+  		</select>
+    </div>
+   </div>
+    
+   
+      
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+      <button style='width:80px;' type="submit" onclick="javascript:analysis()" class="btn btn-primary">提交</button>
+    </div>
+  </div>
+  
+</form>
+
+
+<div class="result col-sm-offset-1 col-sm-10" style="display:none;margin-top:50px">
+<div class="btn-group text-center col-sm-offset-8" style="margin-bottom:15px;">
+	<button type="button" onclick="javascript:emp()" class="btn btn-success">清空</button>
+	<button type="button" onclick="javascript:download()" class="btn btn-success" style="margin-left:20px;">下载</button>
+</div>
+	<div class="panel panel-default bazi"><div class="panel-heading">
+				八字信息
+			</div><pre> <div class="panel-body">
+			</div></pre></div> <div class="panel panel-default basic"><div class="panel-heading">
+				基本面分析
+			</div><pre> <div class="panel-body">
+			</div></pre></div> <div class="panel panel-default kaiyun"><div class="panel-heading">
+				开运建议
+			</div> <pre><div class="panel-body">
+			</div></pre></div> <div class="panel panel-default mingge"><div class="panel-heading">
+				命格分析
+			</div> <pre><div class="panel-body">
+			</div></pre></div> <div class="panel panel-default sizhu"><div class="panel-heading">
+				四柱分析
+			</div> <pre><div class="panel-body">
+			</div> </pre></div><div class="panel panel-default business"><div class="panel-heading">
+				适合的事业分析
+			</div> <pre><div class="panel-body">
+			</div> </pre></div><div class="panel panel-default tzm"><div class="panel-heading">
+				童子命
+			</div> <pre><div class="panel-body">
+			</div> </pre></div><div class="panel panel-default shensha"><div class="panel-heading">
+				神煞分析
+			</div> <pre><div class="panel-body">
+			</div></pre></div> <div class="panel panel-default goodevil"><div class="panel-heading">
+				贵人、恶人分析:
+			</div><pre> <div class="panel-body">
+			</div></pre></div><div class="panel panel-default jixiong"><div class="panel-heading">
+				生肖流年吉凶:
+			</div><pre> <div class="panel-body">
+			</div></pre></div><div class="panel panel-default taisui"><div class="panel-heading">
+				犯太岁:
+			</div> <pre><div class="panel-body">
+			</div></pre></div>
+</div>
+</div>
+
+  </body>
+   <script>
+    $(".dateValue").solarlunar({
+  type: "solar"
+  });
+ /*   $(".xp2").solarlunar({
+    lmonth: 7,
+  });*/
+</script>
+</html>
